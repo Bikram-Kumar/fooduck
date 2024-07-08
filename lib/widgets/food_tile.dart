@@ -3,7 +3,7 @@ import 'package:fooduck/managers/favourites_manager.dart';
 import 'package:fooduck/managers/food_data_manager.dart';
 
 class FoodTile extends StatefulWidget {
-  final FoodData foodData;
+  final FoodDataManager foodData;
   const FoodTile(this.foodData, { super.key });
 
   @override

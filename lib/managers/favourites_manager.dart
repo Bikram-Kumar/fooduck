@@ -2,17 +2,17 @@ import 'package:fooduck/managers/food_data_manager.dart';
 
 abstract class FavouritesManager {
 
-  static final _favourites = <FoodData>{};
+  static final _favourites = <FoodDataManager>{};
 
-  static void addFavourite (FoodData food) {
+  static void addFavourite (FoodDataManager food) {
     _favourites.add(food);
   }
 
-  static void removeFavourite (FoodData food) {
+  static void removeFavourite (FoodDataManager food) {
     _favourites.remove(food);
   }
 
-  static void toggleFavourite (FoodData food) {
+  static void toggleFavourite (FoodDataManager food) {
 
     if (_favourites.contains(food)) {
       removeFavourite(food);
@@ -21,7 +21,7 @@ abstract class FavouritesManager {
     }
   }
 
-  static isFavourite(FoodData food) {
+  static isFavourite(FoodDataManager food) {
     return _favourites.contains(food);
   }
 
@@ -29,7 +29,7 @@ abstract class FavouritesManager {
     return _favourites.isEmpty;
   }
 
-  static Set<FoodData> getFavourites () {
+  static Set<FoodDataManager> getFavourites () {
     return _favourites;
   }
 

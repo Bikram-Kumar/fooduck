@@ -6,22 +6,22 @@ class FoodCategoryData {
 
   String name;
   late AssetImage image;
-  final _foods = <FoodData>{};
+  final _foods = <FoodDataManager>{};
 
   FoodCategoryData(this.name, String imageName, {imagePathPrefix = "assets/images/categories/"}) {
     image = AssetImage(imagePathPrefix + imageName);
   }
 
-  Set<FoodData> get foods {
+  Set<FoodDataManager> get foods {
     return _foods;
   }
 
 
-  void addFood(FoodData food) {
+  void addFood(FoodDataManager food) {
     _foods.add(food);
   }
 
-  void removeFood(FoodData food) {
+  void removeFood(FoodDataManager food) {
     _foods.remove(food);
   }
     
@@ -39,14 +39,14 @@ abstract class FoodCategoryManager {
       FoodCategoryData("Beverages", "coffee.jpg"),
     ]);
 
-    categories[0].addFood(FoodData("Pizza", "pizza.jpg"));
-    categories[0].addFood(FoodData("French Fries", "french_fries.jpg"));
+    categories[0].addFood(FoodDataManager("Pizza", "pizza.jpg"));
+    categories[0].addFood(FoodDataManager("French Fries", "french_fries.jpg"));
 
-    categories[1].addFood(FoodData("Shrimps", "shrimps.jpg"));
+    categories[1].addFood(FoodDataManager("Shrimps", "shrimps.jpg"));
 
-    categories[2].addFood(FoodData("French Fries", "french_fries.jpg"));
+    categories[2].addFood(FoodDataManager("French Fries", "french_fries.jpg"));
 
-    categories[3].addFood(FoodData("Pizza", "pizza.jpg"));
+    categories[3].addFood(FoodDataManager("Pizza", "pizza.jpg"));
   }
 
   static List<FoodCategoryData> getCategories() {

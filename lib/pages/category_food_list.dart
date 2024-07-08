@@ -30,7 +30,7 @@ class CategoryFoodListState extends State<CategoryFoodList> {
   List<Widget> getCategoryFoods() {
     var tiles = <FoodTile>[];
 
-    for (FoodData cat in widget.catData.foods) {
+    for (FoodDataManager cat in widget.catData.foods) {
       tiles.add(FoodTile(cat));
     }
 

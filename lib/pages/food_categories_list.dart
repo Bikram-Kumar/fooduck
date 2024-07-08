@@ -25,7 +25,6 @@ class FoodCategoriesListState extends State<FoodCategoriesList> {
     for (FoodCategoryData cat in categories) {
       tiles.add(FoodCategoryTile(cat));
     }
-
     return tiles;
   }
 

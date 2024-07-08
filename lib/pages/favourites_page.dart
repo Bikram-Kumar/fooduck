@@ -30,7 +30,7 @@ class FavouritesPageState extends State<FavouritesPage> {
   List<Widget> getFavourites(){
     var favs = FavouritesManager.getFavourites();
     var tiles = <FoodTile>[];
-    for (FoodData fav in favs) {
+    for (FoodDataManager fav in favs) {
       tiles.add(FoodTile(fav));
     }
     return tiles;
