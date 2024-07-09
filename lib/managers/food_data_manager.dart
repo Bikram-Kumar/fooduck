@@ -21,19 +21,31 @@ class FoodDataManager {
     dbDir = await getApplicationDocumentsDirectory();
     isar = await Isar.open([FoodDataSchema], directory: dbDir!.path, name:"fooduck_food_data.db");
 
-    addToDB(FoodData(0, "Pizza", "pizza.jpg"));
-    addToDB(FoodData(1, "French Fries", "french_fries.jpg"));
-    print(dbDir);
+    // Add some default foods
+    // make it addToDB() in production, otherwise data will not persist
+    await addToDB(FoodData(0, "Pizza", "pizza.jpg", "Italian;Vegetarian;Non-veg"));
+    await addToDB(FoodData(1, "French Fries", "french_fries.jpg", "Quick & Easy;Vegetarian;Vegan"));
+    await addToDB(FoodData(2, "Shrimps", "shrimps.jpg", "Non-veg;Seafood"));
+    await addToDB(FoodData(3, "Cake", "cake.jpg", "Vegetarian;Non-veg"));
+    await addToDB(FoodData(4, "Coffee", "coffee.jpg", "Vegetarian;Beverages;Quick & Easy"));
+    await updateInDB(FoodData(5, "Pancake", "pancake.jpg", "Vegetarian;Quick & Easy")..isCustom = true);
+    await addToDB(FoodData(6, "Melon Juice", "melon_juice.jpg", "Vegetarian;Quick & Easy;Beverages;Vegan"));
+    await addToDB(FoodData(7, "Pasta", "pasta.jpg", "Vegetarian;Quick & Easy;Vegan;Italian"));
 
-    // categories[1].addFood(FoodDataManager("Shrimps", "shrimps.jpg"));
-
-    // categories[2].addFood(FoodDataManager("French Fries", "french_fries.jpg"));
-
-    // categories[3].addFood(FoodDataManager("Pizza", "pizza.jpg"));
   }
 
+  // only adds if not already exists
   static Future<void> addToDB(FoodData foodData) async {
+    if (await isar!.foodDatas.where().idEqualTo(foodData.id).isEmpty()) {
+      await isar!.writeTxn(() async{
+        await isar!.foodDatas.put(foodData);
+      });
+    }
+  }
 
+
+  // creates entry if not there
+  static Future<void> updateInDB(FoodData foodData) async {
     await isar!.writeTxn(() async{
       await isar!.foodDatas.put(foodData);
     });
@@ -49,7 +61,33 @@ class FoodDataManager {
     
   }
 
-  
+  static Future<List<FoodData?>> getAllFoodDataWithTag(String tag) async {
+    var allWithTag = <FoodData>[];
+    for (FoodData? foodData in await getAllFromDB()) {
+      var tags = foodData?.tags.split(";");
+      if (tags!.contains(tag)) {
+        allWithTag.add(foodData!);
+      }
+    }
+    return allWithTag;
+  }
+
+
+  static Future<List<FoodData?>> getFavourites() async {
+    return await isar!.foodDatas.filter().isFavouriteEqualTo(true).findAll();
+     
+  }
+
+  static Future<List<FoodData?>> getCustoms() async {
+    return await isar!.foodDatas.filter().isCustomEqualTo(true).findAll();
+     
+  }
+
+  static Future<int?> getMaxId() async {
+    return await isar!.foodDatas.where().idProperty().max();
+     
+  }
+
 
   static Future<void> deleteFromDB(FoodData foodData) async {
 
@@ -57,5 +95,6 @@ class FoodDataManager {
       await isar!.foodDatas.delete(foodData.id);
     });
   }
+
 
 }

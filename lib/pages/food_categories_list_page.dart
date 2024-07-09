@@ -13,7 +13,7 @@ class FoodCategoriesListState extends State<FoodCategoriesList> {
   @override
   Widget build(BuildContext context) {
     return GridView(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1, childAspectRatio: 1.71),
       children: getFoodCategories(),
     );
   }

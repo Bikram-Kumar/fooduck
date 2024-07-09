@@ -1,36 +1,38 @@
+import 'package:fooduck/isar_collections/food_data.dart';
 import 'package:fooduck/managers/food_data_manager.dart';
 
 abstract class FavouritesManager {
 
-  static final _favourites = <FoodDataManager>{};
+  static var favourites = <FoodData?>[];
 
-  static void addFavourite (FoodDataManager food) {
-    _favourites.add(food);
+  static Future<void> addFavourite (FoodData food) async {
+    food.isFavourite = true;
+    await FoodDataManager.updateInDB(food);
   }
 
-  static void removeFavourite (FoodDataManager food) {
-    _favourites.remove(food);
+  static Future<void> removeFavourite (FoodData food) async {
+    food.isFavourite = false;
+    await FoodDataManager.updateInDB(food);
   }
 
-  static void toggleFavourite (FoodDataManager food) {
+  static Future<void> toggleFavourite (FoodData food) async {
 
-    if (_favourites.contains(food)) {
-      removeFavourite(food);
+    if (food.isFavourite) {
+      await removeFavourite(food);
     } else {
-      addFavourite(food);
+      await addFavourite(food);
     }
   }
 
-  static isFavourite(FoodDataManager food) {
-    return _favourites.contains(food);
+
+  static Future<bool> get hasNoFavourites async {
+    favourites = await FoodDataManager.getFavourites();
+    return favourites.isEmpty;
   }
 
-  static bool get hasNoFavourites {
-    return _favourites.isEmpty;
-  }
-
-  static Set<FoodDataManager> getFavourites () {
-    return _favourites;
+  static Future<List<FoodData?>> getFavourites () async {
+    favourites = await FoodDataManager.getFavourites();
+    return favourites;
   }
 
 

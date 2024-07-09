@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fooduck/isar_collections/food_data.dart';
 import 'package:fooduck/managers/food_category_manager.dart';
 import 'package:fooduck/managers/food_data_manager.dart';
 import 'package:fooduck/widgets/food_tile.dart';
@@ -20,18 +21,33 @@ class CategoryFoodListState extends State<CategoryFoodList> {
       appBar: AppBar(
         title: Text(widget.catData.name),
       ),
-      body: GridView(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-        children: getCategoryFoods(),
+      body: FutureBuilder<List<Widget>>(
+        future: getCategoryFoods(),
+        builder: (BuildContext context, AsyncSnapshot<List<Widget>> snapshot) { 
+
+          if (snapshot.hasData) {
+
+            return GridView(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+              children: snapshot.data!,
+            );
+            
+          } else {
+            
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
       ),
     );
   }
 
-  List<Widget> getCategoryFoods() {
+  Future<List<Widget>> getCategoryFoods() async {
     var tiles = <FoodTile>[];
 
-    for (FoodDataManager cat in widget.catData.foods) {
-      tiles.add(FoodTile(cat));
+    for (FoodData? foodData in await FoodDataManager.getAllFoodDataWithTag(widget.catData.name)) {
+      tiles.add(FoodTile(foodData!));
     }
 
     return tiles;

@@ -17,14 +17,34 @@ const FoodDataSchema = CollectionSchema(
   name: r'FoodData',
   id: -8000000396996210907,
   properties: {
-    r'imagePath': PropertySchema(
+    r'imageDir': PropertySchema(
       id: 0,
-      name: r'imagePath',
+      name: r'imageDir',
       type: IsarType.string,
     ),
-    r'name': PropertySchema(
+    r'imageName': PropertySchema(
       id: 1,
+      name: r'imageName',
+      type: IsarType.string,
+    ),
+    r'isCustom': PropertySchema(
+      id: 2,
+      name: r'isCustom',
+      type: IsarType.bool,
+    ),
+    r'isFavourite': PropertySchema(
+      id: 3,
+      name: r'isFavourite',
+      type: IsarType.bool,
+    ),
+    r'name': PropertySchema(
+      id: 4,
       name: r'name',
+      type: IsarType.string,
+    ),
+    r'tags': PropertySchema(
+      id: 5,
+      name: r'tags',
       type: IsarType.string,
     )
   },
@@ -48,8 +68,10 @@ int _foodDataEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
-  bytesCount += 3 + object.imagePath.length * 3;
+  bytesCount += 3 + object.imageDir.length * 3;
+  bytesCount += 3 + object.imageName.length * 3;
   bytesCount += 3 + object.name.length * 3;
+  bytesCount += 3 + object.tags.length * 3;
   return bytesCount;
 }
 
@@ -59,8 +81,12 @@ void _foodDataSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeString(offsets[0], object.imagePath);
-  writer.writeString(offsets[1], object.name);
+  writer.writeString(offsets[0], object.imageDir);
+  writer.writeString(offsets[1], object.imageName);
+  writer.writeBool(offsets[2], object.isCustom);
+  writer.writeBool(offsets[3], object.isFavourite);
+  writer.writeString(offsets[4], object.name);
+  writer.writeString(offsets[5], object.tags);
 }
 
 FoodData _foodDataDeserialize(
@@ -71,9 +97,13 @@ FoodData _foodDataDeserialize(
 ) {
   final object = FoodData(
     id,
+    reader.readString(offsets[4]),
     reader.readString(offsets[1]),
-    reader.readString(offsets[0]),
+    reader.readString(offsets[5]),
+    imageDir: reader.readStringOrNull(offsets[0]) ?? "assets/images/food/",
   );
+  object.isCustom = reader.readBool(offsets[2]);
+  object.isFavourite = reader.readBool(offsets[3]);
   return object;
 }
 
@@ -85,8 +115,16 @@ P _foodDataDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset) ?? "assets/images/food/") as P;
     case 1:
+      return (reader.readString(offset)) as P;
+    case 2:
+      return (reader.readBool(offset)) as P;
+    case 3:
+      return (reader.readBool(offset)) as P;
+    case 4:
+      return (reader.readString(offset)) as P;
+    case 5:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -234,20 +272,20 @@ extension FoodDataQueryFilter
     });
   }
 
-  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> imagePathEqualTo(
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> imageDirEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'imagePath',
+        property: r'imageDir',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> imagePathGreaterThan(
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> imageDirGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -255,14 +293,14 @@ extension FoodDataQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'imagePath',
+        property: r'imageDir',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> imagePathLessThan(
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> imageDirLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -270,14 +308,14 @@ extension FoodDataQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'imagePath',
+        property: r'imageDir',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> imagePathBetween(
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> imageDirBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -286,7 +324,7 @@ extension FoodDataQueryFilter
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'imagePath',
+        property: r'imageDir',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -296,71 +334,221 @@ extension FoodDataQueryFilter
     });
   }
 
-  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> imagePathStartsWith(
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> imageDirStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'imagePath',
+        property: r'imageDir',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> imagePathEndsWith(
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> imageDirEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'imagePath',
+        property: r'imageDir',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> imagePathContains(
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> imageDirContains(
       String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
-        property: r'imagePath',
+        property: r'imageDir',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> imagePathMatches(
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> imageDirMatches(
       String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
-        property: r'imagePath',
+        property: r'imageDir',
         wildcard: pattern,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> imagePathIsEmpty() {
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> imageDirIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'imagePath',
+        property: r'imageDir',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> imageDirIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'imageDir',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> imageNameEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'imageName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> imageNameGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'imageName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> imageNameLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'imageName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> imageNameBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'imageName',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> imageNameStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'imageName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> imageNameEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'imageName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> imageNameContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'imageName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> imageNameMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'imageName',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> imageNameIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'imageName',
         value: '',
       ));
     });
   }
 
   QueryBuilder<FoodData, FoodData, QAfterFilterCondition>
-      imagePathIsNotEmpty() {
+      imageNameIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'imagePath',
+        property: r'imageName',
         value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> isCustomEqualTo(
+      bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'isCustom',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> isFavouriteEqualTo(
+      bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'isFavourite',
+        value: value,
       ));
     });
   }
@@ -494,6 +682,136 @@ extension FoodDataQueryFilter
       ));
     });
   }
+
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> tagsEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'tags',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> tagsGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'tags',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> tagsLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'tags',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> tagsBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'tags',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> tagsStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'tags',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> tagsEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'tags',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> tagsContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'tags',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> tagsMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'tags',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> tagsIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'tags',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> tagsIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'tags',
+        value: '',
+      ));
+    });
+  }
 }
 
 extension FoodDataQueryObject
@@ -503,15 +821,51 @@ extension FoodDataQueryLinks
     on QueryBuilder<FoodData, FoodData, QFilterCondition> {}
 
 extension FoodDataQuerySortBy on QueryBuilder<FoodData, FoodData, QSortBy> {
-  QueryBuilder<FoodData, FoodData, QAfterSortBy> sortByImagePath() {
+  QueryBuilder<FoodData, FoodData, QAfterSortBy> sortByImageDir() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'imagePath', Sort.asc);
+      return query.addSortBy(r'imageDir', Sort.asc);
     });
   }
 
-  QueryBuilder<FoodData, FoodData, QAfterSortBy> sortByImagePathDesc() {
+  QueryBuilder<FoodData, FoodData, QAfterSortBy> sortByImageDirDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'imagePath', Sort.desc);
+      return query.addSortBy(r'imageDir', Sort.desc);
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterSortBy> sortByImageName() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'imageName', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterSortBy> sortByImageNameDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'imageName', Sort.desc);
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterSortBy> sortByIsCustom() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isCustom', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterSortBy> sortByIsCustomDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isCustom', Sort.desc);
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterSortBy> sortByIsFavourite() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isFavourite', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterSortBy> sortByIsFavouriteDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isFavourite', Sort.desc);
     });
   }
 
@@ -524,6 +878,18 @@ extension FoodDataQuerySortBy on QueryBuilder<FoodData, FoodData, QSortBy> {
   QueryBuilder<FoodData, FoodData, QAfterSortBy> sortByNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.desc);
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterSortBy> sortByTags() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'tags', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterSortBy> sortByTagsDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'tags', Sort.desc);
     });
   }
 }
@@ -542,15 +908,51 @@ extension FoodDataQuerySortThenBy
     });
   }
 
-  QueryBuilder<FoodData, FoodData, QAfterSortBy> thenByImagePath() {
+  QueryBuilder<FoodData, FoodData, QAfterSortBy> thenByImageDir() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'imagePath', Sort.asc);
+      return query.addSortBy(r'imageDir', Sort.asc);
     });
   }
 
-  QueryBuilder<FoodData, FoodData, QAfterSortBy> thenByImagePathDesc() {
+  QueryBuilder<FoodData, FoodData, QAfterSortBy> thenByImageDirDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'imagePath', Sort.desc);
+      return query.addSortBy(r'imageDir', Sort.desc);
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterSortBy> thenByImageName() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'imageName', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterSortBy> thenByImageNameDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'imageName', Sort.desc);
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterSortBy> thenByIsCustom() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isCustom', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterSortBy> thenByIsCustomDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isCustom', Sort.desc);
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterSortBy> thenByIsFavourite() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isFavourite', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterSortBy> thenByIsFavouriteDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isFavourite', Sort.desc);
     });
   }
 
@@ -565,14 +967,45 @@ extension FoodDataQuerySortThenBy
       return query.addSortBy(r'name', Sort.desc);
     });
   }
+
+  QueryBuilder<FoodData, FoodData, QAfterSortBy> thenByTags() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'tags', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterSortBy> thenByTagsDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'tags', Sort.desc);
+    });
+  }
 }
 
 extension FoodDataQueryWhereDistinct
     on QueryBuilder<FoodData, FoodData, QDistinct> {
-  QueryBuilder<FoodData, FoodData, QDistinct> distinctByImagePath(
+  QueryBuilder<FoodData, FoodData, QDistinct> distinctByImageDir(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'imagePath', caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'imageDir', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QDistinct> distinctByImageName(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'imageName', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QDistinct> distinctByIsCustom() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'isCustom');
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QDistinct> distinctByIsFavourite() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'isFavourite');
     });
   }
 
@@ -580,6 +1013,13 @@ extension FoodDataQueryWhereDistinct
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'name', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QDistinct> distinctByTags(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'tags', caseSensitive: caseSensitive);
     });
   }
 }
@@ -592,15 +1032,39 @@ extension FoodDataQueryProperty
     });
   }
 
-  QueryBuilder<FoodData, String, QQueryOperations> imagePathProperty() {
+  QueryBuilder<FoodData, String, QQueryOperations> imageDirProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'imagePath');
+      return query.addPropertyName(r'imageDir');
+    });
+  }
+
+  QueryBuilder<FoodData, String, QQueryOperations> imageNameProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'imageName');
+    });
+  }
+
+  QueryBuilder<FoodData, bool, QQueryOperations> isCustomProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'isCustom');
+    });
+  }
+
+  QueryBuilder<FoodData, bool, QQueryOperations> isFavouriteProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'isFavourite');
     });
   }
 
   QueryBuilder<FoodData, String, QQueryOperations> nameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'name');
+    });
+  }
+
+  QueryBuilder<FoodData, String, QQueryOperations> tagsProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'tags');
     });
   }
 }

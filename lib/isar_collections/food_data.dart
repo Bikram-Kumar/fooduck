@@ -8,7 +8,16 @@ class FoodData{
 
   String name;
 
-  String imagePath;
+  // semi-colon separated
+  String tags;
+  
+  String imageName;
+  String imageDir;
+  bool isFavourite = false;
+  
+  bool isCustom = false;
 
-  FoodData(this.id, this.name, this.imagePath);
+
+  FoodData(this.id, this.name, this.imageName, this.tags, {this.imageDir = "assets/images/food/"});
+
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fooduck/isar_collections/food_data.dart';
 import 'package:fooduck/managers/favourites_manager.dart';
-import 'package:fooduck/managers/food_data_manager.dart';
 
 class FoodTile extends StatefulWidget {
-  final FoodDataManager foodData;
+  final FoodData foodData;
   const FoodTile(this.foodData, { super.key });
 
   @override
@@ -13,39 +13,48 @@ class FoodTile extends StatefulWidget {
 class _FoodTileState extends State<FoodTile> {
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Stack(
       children: [
-
-        Stack(
-          children: [
-            InkWell(
-              onTap: (){},
-              splashColor: Colors.grey.withOpacity(0.1),
-              child: Ink(
-                width: 234,
-                height: 234,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: widget.foodData.image,
-                    fit: BoxFit.cover,
-                  )
-                ),
+        InkWell(
+          onTap: (){},
+          splashColor: Colors.grey.withOpacity(0.1),
+          child: Ink(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(widget.foodData.imageDir + widget.foodData.imageName),
+                fit: BoxFit.cover,
               ),
+              borderRadius: BorderRadius.circular(5),
             ),
-            IconButton(
-              onPressed: (){
-                setState(() {
-                  FavouritesManager.toggleFavourite(widget.foodData);
-                });
-              },
-              icon: (FavouritesManager.isFavourite(widget.foodData)) ? Icon(Icons.favorite, color: Colors.red,) : Icon(Icons.favorite_border),
-            )
-          ]
+          ),
         ),
-
-        Text(widget.foodData.name),
+        IconButton(
+          onPressed: () async {
+            await FavouritesManager.toggleFavourite(widget.foodData);
+            setState(() {
+              //
+            });
+          },
+          icon: (widget.foodData.isFavourite) ? Icon(Icons.favorite, color: Colors.red,) : Icon(Icons.favorite_border),
+        ),
+    
+        Container(
+          alignment: Alignment.bottomCenter,
+          margin: EdgeInsets.all(10),
+          child: Text(
+            widget.foodData.name,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+            ),
+          ),
+        ),
+    
       ],
-    );
+    
+        );
+
+      
   }
 }
 
