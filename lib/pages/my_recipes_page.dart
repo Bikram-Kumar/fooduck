@@ -11,6 +11,7 @@ class MyRecipesPage extends StatefulWidget {
 }
 
 class MyRecipesPageState extends State<MyRecipesPage> {
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -49,10 +50,69 @@ class MyRecipesPageState extends State<MyRecipesPage> {
         ),
       ],
     );
+
   }
 
+
   void openAddRecipePopup() {
-    print("object");
+
+    String name = "My Recipe";
+    String tags = "";
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Add Recipe"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                decoration: InputDecoration(
+                  hintText: "My Recipe",
+                ),
+                onChanged: (value) {
+                  name = value;
+                },
+              ),
+              TextFormField(
+                decoration: InputDecoration(
+                  hintText: "Vegetarian;Quick & Easy;Beverages",
+                ),
+                onChanged: (value) {
+                  tags = value;
+                },
+              ),
+            ],
+          ),
+
+          actions: [
+            TextButton(
+              onPressed: (){
+                Navigator.of(context).pop();
+              },
+              child: Text("Cancel")),
+            TextButton(
+              onPressed: () async {
+
+                Navigator.of(context).pop();
+
+                int id = (await FoodDataManager.getMaxId())! + 1;
+            
+                await FoodDataManager.addToDB(FoodData(
+                  id,
+                  name, 
+                  "coffee.jpg", 
+                  tags
+                )..isCustom = true);
+
+                setState(() {});
+              },
+              child: Text("Add")),
+          ],
+        );
+      },
+      );
   }
   
   Future<List<Widget>> getCustomRecipes() async {

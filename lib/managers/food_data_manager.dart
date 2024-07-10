@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:fooduck/isar_collections/food_data.dart';
 import 'package:isar/isar.dart';
@@ -73,6 +74,7 @@ class FoodDataManager {
   }
 
 
+
   static Future<List<FoodData?>> getFavourites() async {
     return await isar!.foodDatas.filter().isFavouriteEqualTo(true).findAll();
      
@@ -84,7 +86,9 @@ class FoodDataManager {
   }
 
   static Future<int?> getMaxId() async {
-    return await isar!.foodDatas.where().idProperty().max();
+    // .max() has a bug  which always returns null
+    var ids = await isar!.foodDatas.where().idProperty().findAll();
+    return ids.reduce(max);
      
   }
 
@@ -93,6 +97,12 @@ class FoodDataManager {
 
     await isar!.writeTxn(() async{
       await isar!.foodDatas.delete(foodData.id);
+    });
+  }
+
+  static Future<void> clearDB() async {
+    await isar!.writeTxn(() async{
+      await isar!.foodDatas.clear();
     });
   }
 

@@ -13,6 +13,9 @@ class CustomFoodTile extends StatefulWidget {
 }
 
 class CustomFoodTileState extends State<CustomFoodTile> {
+
+  bool deleted = false;
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -23,13 +26,14 @@ class CustomFoodTileState extends State<CustomFoodTile> {
           alignment: Alignment.topRight,
           child: IconButton(
             onPressed: () async {
+              if (deleted) return;
               await FoodDataManager.deleteFromDB(widget.foodData);
               setState(() {
-                //
+                deleted = true;
               });
             },
             icon: Icon(Icons.delete),
-            color: Colors.white,
+            color: deleted ? Colors.grey : Colors.white,
           ),
         )
       ],
