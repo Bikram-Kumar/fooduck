@@ -102,7 +102,7 @@ class MyRecipesPageState extends State<MyRecipesPage> {
                 await FoodDataManager.addToDB(FoodData(
                   id,
                   name, 
-                  "coffee.jpg", 
+                  "general.jpg", 
                   tags
                 )..isCustom = true);
 

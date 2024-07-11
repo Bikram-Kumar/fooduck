@@ -23,6 +23,7 @@ abstract class FoodCategoryManager {
       FoodCategoryData("Vegetarian", "melon_juice.jpg"),
       FoodCategoryData("Beverages", "coffee.jpg"),
       FoodCategoryData("Italian", "pizza.jpg"),
+      FoodCategoryData("Japanese", "sushi.jpg"),
     ]);
 
 

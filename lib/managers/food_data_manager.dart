@@ -25,13 +25,19 @@ class FoodDataManager {
     // Add some default foods
     // make it addToDB() in production, otherwise data will not persist
     await addToDB(FoodData(0, "Pizza", "pizza.jpg", "Italian;Vegetarian;Non-veg"));
-    await addToDB(FoodData(1, "French Fries", "french_fries.jpg", "Quick & Easy;Vegetarian;Vegan"));
-    await addToDB(FoodData(2, "Shrimps", "shrimps.jpg", "Non-veg;Seafood"));
+    await addToDB(FoodData(1, "French Fries", "french_fries.jpg", "Quick & Easy;Vegetarian;Vegan;Lactose Free;Gluten Free"));
+    await addToDB(FoodData(2, "Shrimps", "shrimps.jpg", "Non-veg;Seafood;Lactose Free;Gluten Free"));
     await addToDB(FoodData(3, "Cake", "cake.jpg", "Vegetarian;Non-veg"));
-    await addToDB(FoodData(4, "Coffee", "coffee.jpg", "Vegetarian;Beverages;Quick & Easy"));
-    await updateInDB(FoodData(5, "Pancake", "pancake.jpg", "Vegetarian;Quick & Easy")..isCustom = true);
-    await addToDB(FoodData(6, "Melon Juice", "melon_juice.jpg", "Vegetarian;Quick & Easy;Beverages;Vegan"));
-    await addToDB(FoodData(7, "Pasta", "pasta.jpg", "Vegetarian;Quick & Easy;Vegan;Italian"));
+    await addToDB(FoodData(4, "Coffee", "coffee.jpg", "Vegetarian;Beverages;Quick & Easy;Gluten Free"));
+    await addToDB(FoodData(5, "Pancake", "pancake.jpg", "Vegetarian;Quick & Easy"));
+    await addToDB(FoodData(6, "Melon Juice", "melon_juice.jpg", "Vegetarian;Quick & Easy;Beverages;Vegan;Lactose Free;Gluten Free"));
+    await addToDB(FoodData(7, "Pasta", "pasta.jpg", "Vegetarian;Quick & Easy;Vegan;Italian;Lactose Free"));
+    await addToDB(FoodData(8, "Burger", "burger.jpg", "Vegetarian;Quick & Easy;Vegan;Non-veg"));
+    await addToDB(FoodData(9, "Fish Fry", "fish_fry.jpg", "Non-veg;Lactose Free;Gluten Free"));
+    await addToDB(FoodData(10, "Japanese Noodles", "japanese_noodles.jpg", "Japanese;Vegetarian;Quick & Easy;Vegan"));
+    await addToDB(FoodData(11, "Noodles", "noodles.jpg", "Vegetarian;Quick & Easy;Vegan;Lactose Free"));
+    await addToDB(FoodData(12, "Salad", "salad.jpg", "Vegetarian;Quick & Easy;Vegan"));
+    await addToDB(FoodData(13, "Sushi", "sushi.jpg", "Japanese;Non-veg;Vegetarian;Gluten Free;Lactose Free"));
 
   }
 

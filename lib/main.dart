@@ -3,7 +3,7 @@ import 'package:fooduck/managers/food_category_manager.dart';
 import 'package:fooduck/managers/food_data_manager.dart';
 import 'package:fooduck/pages/homepage.dart';
 
-void main() async{
+Future<void> main() async{
   runApp(const MainApp());
 
   FoodCategoryManager.initializeData();
