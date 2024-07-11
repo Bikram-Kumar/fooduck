@@ -4,6 +4,7 @@ import 'package:fooduck/pages/category_food_list.dart';
 
 class FoodCategoryTile extends StatelessWidget {
   final FoodCategoryData catData;
+  
 
   const FoodCategoryTile(this.catData, {super.key});
 

@@ -10,11 +10,19 @@ class FoodCategoriesList extends StatefulWidget {
 }
 
 class FoodCategoriesListState extends State<FoodCategoriesList> {
+  List<Widget> catList = [];
+
+  @override
+  void initState() {
+    catList = getFoodCategories();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GridView(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1, childAspectRatio: 1.71),
-      children: getFoodCategories(),
+      children: catList,
     );
   }
 

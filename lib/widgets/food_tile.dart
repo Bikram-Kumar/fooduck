@@ -8,9 +8,27 @@ class FoodTile extends StatefulWidget {
 
   @override
   State<FoodTile> createState() => _FoodTileState();
+
+  
 }
 
 class _FoodTileState extends State<FoodTile> {
+
+  AssetImage? img; 
+  @override
+  void initState() {
+    img = AssetImage(widget.foodData.imageDir + widget.foodData.imageName);
+    super.initState();
+  }
+
+
+  @override
+  void didChangeDependencies() {
+    precacheImage(img!, context);
+    super.didChangeDependencies();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -21,7 +39,7 @@ class _FoodTileState extends State<FoodTile> {
           child: Ink(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage(widget.foodData.imageDir + widget.foodData.imageName),
+                image: img!,
                 fit: BoxFit.cover,
               ),
               borderRadius: BorderRadius.circular(5),
