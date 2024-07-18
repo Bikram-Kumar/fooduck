@@ -24,20 +24,20 @@ class FoodDataManager {
 
     // Add some default foods
     // make it addToDB() in production, otherwise data will not persist
-    await addToDB(FoodData(0, "Pizza", "pizza.jpg", "Italian;Vegetarian;Non-veg"));
-    await addToDB(FoodData(1, "French Fries", "french_fries.jpg", "Quick & Easy;Vegetarian;Vegan;Lactose Free;Gluten Free"));
-    await addToDB(FoodData(2, "Shrimps", "shrimps.jpg", "Non-veg;Seafood;Lactose Free;Gluten Free"));
-    await addToDB(FoodData(3, "Cake", "cake.jpg", "Vegetarian;Non-veg"));
-    await addToDB(FoodData(4, "Coffee", "coffee.jpg", "Vegetarian;Beverages;Quick & Easy;Gluten Free"));
-    await addToDB(FoodData(5, "Pancake", "pancake.jpg", "Vegetarian;Quick & Easy"));
-    await addToDB(FoodData(6, "Melon Juice", "melon_juice.jpg", "Vegetarian;Quick & Easy;Beverages;Vegan;Lactose Free;Gluten Free"));
-    await addToDB(FoodData(7, "Pasta", "pasta.jpg", "Vegetarian;Quick & Easy;Vegan;Italian;Lactose Free"));
-    await addToDB(FoodData(8, "Burger", "burger.jpg", "Vegetarian;Quick & Easy;Vegan;Non-veg"));
-    await addToDB(FoodData(9, "Fish Fry", "fish_fry.jpg", "Non-veg;Lactose Free;Gluten Free"));
-    await addToDB(FoodData(10, "Japanese Noodles", "japanese_noodles.jpg", "Japanese;Vegetarian;Quick & Easy;Vegan"));
-    await addToDB(FoodData(11, "Noodles", "noodles.jpg", "Vegetarian;Quick & Easy;Vegan;Lactose Free"));
-    await addToDB(FoodData(12, "Salad", "salad.jpg", "Vegetarian;Quick & Easy;Vegan"));
-    await addToDB(FoodData(13, "Sushi", "sushi.jpg", "Japanese;Non-veg;Vegetarian;Gluten Free;Lactose Free"));
+    await updateInDB(FoodData(0, "Pizza", "pizza.jpg", "Italian;Vegetarian;Non-veg", "Flour, Cheese, Toppings", "Mix it and make."));
+    await updateInDB(FoodData(1, "French Fries", "french_fries.jpg", "Quick & Easy;Vegetarian;Vegan;Lactose Free;Gluten Free", "Potato, oil", "Fry it in oil"));
+    await updateInDB(FoodData(2, "Shrimps", "shrimps.jpg", "Non-veg;Seafood;Lactose Free;Gluten Free", "Shrimps, spices", "Just do it."));
+    await updateInDB(FoodData(3, "Cake", "cake.jpg", "Vegetarian;Non-veg", "Flour, cream, egg, sugar", "Make it"));
+    await updateInDB(FoodData(4, "Coffee", "coffee.jpg", "Vegetarian;Beverages;Quick & Easy;Gluten Free", "Coffe and milk", "mix it"));
+    await updateInDB(FoodData(5, "Pancake", "pancake.jpg", "Vegetarian;Quick & Easy", "flour, butter", "heat it"));
+    await updateInDB(FoodData(6, "Melon Juice", "melon_juice.jpg", "Vegetarian;Quick & Easy;Beverages;Vegan;Lactose Free;Gluten Free", "melon", "juice it"));
+    await updateInDB(FoodData(7, "Pasta", "pasta.jpg", "Vegetarian;Quick & Easy;Vegan;Italian;Lactose Free", "pasta", "boil"));
+    await updateInDB(FoodData(8, "Burger", "burger.jpg", "Vegetarian;Quick & Easy;Vegan;Non-veg", "buns, veg", "bun it"));
+    await updateInDB(FoodData(9, "Fish Fry", "fish_fry.jpg", "Non-veg;Lactose Free;Gluten Free", "fish, oil", "fry it"));
+    await updateInDB(FoodData(10, "Japanese Noodles", "japanese_noodles.jpg", "Japanese;Vegetarian;Quick & Easy;Vegan", "noodles", "make it in jap style"));
+    await updateInDB(FoodData(11, "Noodles", "noodles.jpg", "Vegetarian;Quick & Easy;Vegan;Lactose Free", "noodles", "boil it"));
+    await updateInDB(FoodData(12, "Salad", "salad.jpg", "Vegetarian;Quick & Easy;Vegan", "vegetables", "cut and serve"));
+    await updateInDB(FoodData(13, "Sushi", "sushi.jpg", "Japanese;Non-veg;Vegetarian;Gluten Free;Lactose Free", "rice, stuffs", "make it"));
 
   }
 

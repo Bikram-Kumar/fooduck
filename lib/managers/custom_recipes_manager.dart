@@ -9,7 +9,7 @@ abstract class CustomRecipesManager {
       (await FoodDataManager.getMaxId())! + 1,
       name,
       imageName,
-      tags
+      tags, "", ""
     );
     foodData.isCustom = true;
 

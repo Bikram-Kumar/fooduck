@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fooduck/isar_collections/food_data.dart';
 import 'package:fooduck/managers/favourites_manager.dart';
+import 'package:fooduck/pages/food_recipe_page.dart';
 
 class FoodTile extends StatefulWidget {
   final FoodData foodData;
@@ -34,7 +35,14 @@ class _FoodTileState extends State<FoodTile> {
     return Stack(
       children: [
         InkWell(
-          onTap: (){},
+          onTap: (){
+
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => FoodRecipePage(widget.foodData))
+            );
+
+          },
           splashColor: Colors.grey.withOpacity(0.1),
           child: Ink(
             decoration: BoxDecoration(

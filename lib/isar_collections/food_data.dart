@@ -17,7 +17,10 @@ class FoodData{
   
   bool isCustom = false;
 
+  String ingredients;
+  String recipe;
 
-  FoodData(this.id, this.name, this.imageName, this.tags, {this.imageDir = "assets/images/food/"});
+
+  FoodData(this.id, this.name, this.imageName, this.tags, this.ingredients, this.recipe, {this.imageDir = "assets/images/food/"});
 
 }

@@ -58,6 +58,8 @@ class MyRecipesPageState extends State<MyRecipesPage> {
 
     String name = "My Recipe";
     String tags = "";
+    String ingredients = "";
+    String recipe = "";
 
     showDialog(
       context: context,
@@ -75,7 +77,10 @@ class MyRecipesPageState extends State<MyRecipesPage> {
                   name = value;
                 },
               ),
+
               TextFormField(
+                maxLines: null,
+                keyboardType: TextInputType.multiline,
                 decoration: InputDecoration(
                   hintText: "Vegetarian;Quick & Easy;Beverages",
                 ),
@@ -83,6 +88,38 @@ class MyRecipesPageState extends State<MyRecipesPage> {
                   tags = value;
                 },
               ),
+
+
+
+              TextFormField(
+                maxLines: null,
+                keyboardType: TextInputType.multiline,
+                decoration: InputDecoration(
+                  hintText: "Ingredients",
+                ),
+                onChanged: (value) {
+                  ingredients = value;
+                },
+              ),
+
+
+
+
+
+              TextFormField(
+                maxLines: null,
+                keyboardType: TextInputType.multiline,
+                decoration: InputDecoration(
+                  hintText: "How to make",
+                ),
+                onChanged: (value) {
+                  recipe = value;
+                },
+              ),
+
+
+
+
             ],
           ),
 
@@ -103,7 +140,9 @@ class MyRecipesPageState extends State<MyRecipesPage> {
                   id,
                   name, 
                   "general.jpg", 
-                  tags
+                  tags,
+                  ingredients,
+                  recipe
                 )..isCustom = true);
 
                 setState(() {});

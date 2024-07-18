@@ -27,23 +27,33 @@ const FoodDataSchema = CollectionSchema(
       name: r'imageName',
       type: IsarType.string,
     ),
-    r'isCustom': PropertySchema(
+    r'ingredients': PropertySchema(
       id: 2,
+      name: r'ingredients',
+      type: IsarType.string,
+    ),
+    r'isCustom': PropertySchema(
+      id: 3,
       name: r'isCustom',
       type: IsarType.bool,
     ),
     r'isFavourite': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'isFavourite',
       type: IsarType.bool,
     ),
     r'name': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'name',
       type: IsarType.string,
     ),
+    r'recipe': PropertySchema(
+      id: 6,
+      name: r'recipe',
+      type: IsarType.string,
+    ),
     r'tags': PropertySchema(
-      id: 5,
+      id: 7,
       name: r'tags',
       type: IsarType.string,
     )
@@ -70,7 +80,9 @@ int _foodDataEstimateSize(
   var bytesCount = offsets.last;
   bytesCount += 3 + object.imageDir.length * 3;
   bytesCount += 3 + object.imageName.length * 3;
+  bytesCount += 3 + object.ingredients.length * 3;
   bytesCount += 3 + object.name.length * 3;
+  bytesCount += 3 + object.recipe.length * 3;
   bytesCount += 3 + object.tags.length * 3;
   return bytesCount;
 }
@@ -83,10 +95,12 @@ void _foodDataSerialize(
 ) {
   writer.writeString(offsets[0], object.imageDir);
   writer.writeString(offsets[1], object.imageName);
-  writer.writeBool(offsets[2], object.isCustom);
-  writer.writeBool(offsets[3], object.isFavourite);
-  writer.writeString(offsets[4], object.name);
-  writer.writeString(offsets[5], object.tags);
+  writer.writeString(offsets[2], object.ingredients);
+  writer.writeBool(offsets[3], object.isCustom);
+  writer.writeBool(offsets[4], object.isFavourite);
+  writer.writeString(offsets[5], object.name);
+  writer.writeString(offsets[6], object.recipe);
+  writer.writeString(offsets[7], object.tags);
 }
 
 FoodData _foodDataDeserialize(
@@ -97,13 +111,15 @@ FoodData _foodDataDeserialize(
 ) {
   final object = FoodData(
     id,
-    reader.readString(offsets[4]),
-    reader.readString(offsets[1]),
     reader.readString(offsets[5]),
+    reader.readString(offsets[1]),
+    reader.readString(offsets[7]),
+    reader.readString(offsets[2]),
+    reader.readString(offsets[6]),
     imageDir: reader.readStringOrNull(offsets[0]) ?? "assets/images/food/",
   );
-  object.isCustom = reader.readBool(offsets[2]);
-  object.isFavourite = reader.readBool(offsets[3]);
+  object.isCustom = reader.readBool(offsets[3]);
+  object.isFavourite = reader.readBool(offsets[4]);
   return object;
 }
 
@@ -119,12 +135,16 @@ P _foodDataDeserializeProp<P>(
     case 1:
       return (reader.readString(offset)) as P;
     case 2:
-      return (reader.readBool(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 3:
       return (reader.readBool(offset)) as P;
     case 4:
-      return (reader.readString(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 5:
+      return (reader.readString(offset)) as P;
+    case 6:
+      return (reader.readString(offset)) as P;
+    case 7:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -533,6 +553,138 @@ extension FoodDataQueryFilter
     });
   }
 
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> ingredientsEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'ingredients',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition>
+      ingredientsGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'ingredients',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> ingredientsLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'ingredients',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> ingredientsBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'ingredients',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> ingredientsStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'ingredients',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> ingredientsEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'ingredients',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> ingredientsContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'ingredients',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> ingredientsMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'ingredients',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> ingredientsIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'ingredients',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition>
+      ingredientsIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'ingredients',
+        value: '',
+      ));
+    });
+  }
+
   QueryBuilder<FoodData, FoodData, QAfterFilterCondition> isCustomEqualTo(
       bool value) {
     return QueryBuilder.apply(this, (query) {
@@ -678,6 +830,136 @@ extension FoodDataQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'name',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> recipeEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'recipe',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> recipeGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'recipe',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> recipeLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'recipe',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> recipeBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'recipe',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> recipeStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'recipe',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> recipeEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'recipe',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> recipeContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'recipe',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> recipeMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'recipe',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> recipeIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'recipe',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterFilterCondition> recipeIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'recipe',
         value: '',
       ));
     });
@@ -845,6 +1127,18 @@ extension FoodDataQuerySortBy on QueryBuilder<FoodData, FoodData, QSortBy> {
     });
   }
 
+  QueryBuilder<FoodData, FoodData, QAfterSortBy> sortByIngredients() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'ingredients', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterSortBy> sortByIngredientsDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'ingredients', Sort.desc);
+    });
+  }
+
   QueryBuilder<FoodData, FoodData, QAfterSortBy> sortByIsCustom() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isCustom', Sort.asc);
@@ -878,6 +1172,18 @@ extension FoodDataQuerySortBy on QueryBuilder<FoodData, FoodData, QSortBy> {
   QueryBuilder<FoodData, FoodData, QAfterSortBy> sortByNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.desc);
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterSortBy> sortByRecipe() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'recipe', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterSortBy> sortByRecipeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'recipe', Sort.desc);
     });
   }
 
@@ -932,6 +1238,18 @@ extension FoodDataQuerySortThenBy
     });
   }
 
+  QueryBuilder<FoodData, FoodData, QAfterSortBy> thenByIngredients() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'ingredients', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterSortBy> thenByIngredientsDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'ingredients', Sort.desc);
+    });
+  }
+
   QueryBuilder<FoodData, FoodData, QAfterSortBy> thenByIsCustom() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isCustom', Sort.asc);
@@ -968,6 +1286,18 @@ extension FoodDataQuerySortThenBy
     });
   }
 
+  QueryBuilder<FoodData, FoodData, QAfterSortBy> thenByRecipe() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'recipe', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QAfterSortBy> thenByRecipeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'recipe', Sort.desc);
+    });
+  }
+
   QueryBuilder<FoodData, FoodData, QAfterSortBy> thenByTags() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'tags', Sort.asc);
@@ -997,6 +1327,13 @@ extension FoodDataQueryWhereDistinct
     });
   }
 
+  QueryBuilder<FoodData, FoodData, QDistinct> distinctByIngredients(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'ingredients', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<FoodData, FoodData, QDistinct> distinctByIsCustom() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'isCustom');
@@ -1013,6 +1350,13 @@ extension FoodDataQueryWhereDistinct
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'name', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<FoodData, FoodData, QDistinct> distinctByRecipe(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'recipe', caseSensitive: caseSensitive);
     });
   }
 
@@ -1044,6 +1388,12 @@ extension FoodDataQueryProperty
     });
   }
 
+  QueryBuilder<FoodData, String, QQueryOperations> ingredientsProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'ingredients');
+    });
+  }
+
   QueryBuilder<FoodData, bool, QQueryOperations> isCustomProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'isCustom');
@@ -1059,6 +1409,12 @@ extension FoodDataQueryProperty
   QueryBuilder<FoodData, String, QQueryOperations> nameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'name');
+    });
+  }
+
+  QueryBuilder<FoodData, String, QQueryOperations> recipeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'recipe');
     });
   }
 
