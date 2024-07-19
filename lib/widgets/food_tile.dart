@@ -15,10 +15,10 @@ class FoodTile extends StatefulWidget {
 
 class _FoodTileState extends State<FoodTile> {
 
-  AssetImage? img; 
+  ExactAssetImage? img; 
   @override
   void initState() {
-    img = AssetImage(widget.foodData.imageDir + widget.foodData.imageName);
+    img = ExactAssetImage(widget.foodData.imageDir + widget.foodData.imageName);
     super.initState();
   }
 

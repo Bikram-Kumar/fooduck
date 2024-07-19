@@ -4,10 +4,10 @@ class FoodCategoryData {
 
 
   String name;
-  late AssetImage image;
+  late ExactAssetImage image;
 
   FoodCategoryData(this.name, String imageName, {imagePathPrefix = "assets/images/food/"}) {
-    image = AssetImage(imagePathPrefix + imageName);
+    image = ExactAssetImage(imagePathPrefix + imageName);
   }
     
 }
